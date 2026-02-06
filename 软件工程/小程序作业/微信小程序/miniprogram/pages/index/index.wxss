@@ -1,0 +1,17 @@
+/* pages/index/index.wxss */
+
+.choose {
+    margin: 80rpx auto;
+  }
+  
+  .join {
+    width: 400rpx;
+    height: 100rpx;
+    background-color: #07c160;
+    margin: 50rpx auto;
+    text-align: center;
+    line-height: 100rpx;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 12rpx;
+  }

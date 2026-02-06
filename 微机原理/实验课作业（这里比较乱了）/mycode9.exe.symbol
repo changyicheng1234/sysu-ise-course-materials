@@ -1,0 +1,18 @@
+< THE SYMBOL TABLE >  mycode9.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+DATA                     	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA_START               	00000     	1         	VAR       	DATA      
+CODE                     	00001     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	CODE      
+LOOP0                    	0000E     	-1        	LABEL     	CODE      
+LOOP1                    	0001F     	-1        	LABEL     	CODE      
+RANK                     	0002F     	-1        	NEAR      	CODE      
+LOOP2                    	00039     	-1        	LABEL     	CODE      
+ADD1                     	00041     	-1        	LABEL     	CODE      
+CONTINUE                 	00045     	-1        	LABEL     	CODE      
+===================================================================================================
+[ 2024/6/16  --  19:24:35 ] 
+< END >
+ 

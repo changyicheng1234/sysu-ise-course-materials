@@ -1,0 +1,26 @@
+<!--pages/form/index.wxml-->
+<view>
+  <form bindsubmit="submit">  <!--form是wxml的表单标签，form包裹的内容会以一个集合的方式保存/发送/提交-->
+    <view class="section">
+      <view class="title">组长昵称</view>
+      <input type="nickname" class="input" name="nickname" placeholder="输入你的昵称" /> 
+      <!--这里的type在真实的手机环境中会唤起不同的键盘，如果是nickname则唤起的是完整输入法，如果是number则唤起纯数字输入法-->
+      <!--当文本框中什么都没输入时，显示placeholder的内容-->
+      <!--name里的内容必须是不一样的，后面调用是需要通过XXX.name来获得，例如这里要通过 变量名.nickname 获得昵称属性-->
+   </view>
+   <view class="section">
+      <view class="title">学号</view>
+      <input type="number" class="input" name="number" placeholder="输入你的学号" />
+   </view>
+   <view class="section">
+      <view class="title">小组名称</view>
+      <input type="nickname" class="input" name="groupName" placeholder="输入小组名称" />
+   </view>
+   <view class="area">
+    <!--当form表单中存在formType属性的值为submit的button标签时，点击button会触发form的bindsubmit属性绑定的函数，例如这里是触发form标签绑定的"submit"函数-->
+    <button style="margin: 30rpx 0" type="primary" formType="submit">提交</button>
+    <!--button的formType为reset时，会重置form表单的所有内容-->
+    <button style="margin: 30rpx 0" formType="reset">重置</button>
+   </view>
+  </form>
+</view>

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="feature-intro">
+        <h2><i class="fas fa-wallet"></i> 经济型饮食推荐</h2>
+        <p class="intro-text">
+            根据您的预算和所在地，我们为您提供营养均衡且经济实惠的一日三餐推荐。
+            优先选择低成本、易获取的食材，并附上省钱小贴士，助您健康饮食更省钱。
+        </p>
+    </div>
+    <form id="economicalForm">
+        <div class="form-group">
+            <label for="budget">每日饮食预算（元）</label>
+            <input type="number" id="budget" name="budget" required placeholder="如：30" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="location">所在地</label>
+            <input type="text" id="location" name="location" required placeholder="如：上海">
+        </div>
+        <div class="form-group">
+            <label for="health_goal">健康目标</label>
+            <input type="text" id="health_goal" name="health_goal" placeholder="如：减重、增肌、控制血糖">
+        </div>
+        <div class="form-group">
+            <label for="dietary_preferences">饮食偏好</label>
+            <input type="text" id="dietary_preferences" name="dietary_preferences" placeholder="如：低脂、高蛋白、素食">
+        </div>
+        <button type="submit" class="btn">获取推荐</button>
+    </form>
+
+    <!-- 加载动画 -->
+    <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+        <div class="spinner"></div>
+        <p class="loading-text">正在为您生成经济型饮食推荐...</p>
+    </div>
+
+    <div id="economicalResult" class="result" style="display: none;"></div>
+</div>
+
+<script>
+document.getElementById('economicalForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultDiv = document.getElementById('economicalResult');
+
+    // 显示加载动画
+    form.style.opacity = '0.5';
+    loadingSpinner.style.display = 'block';
+    resultDiv.style.display = 'none';
+
+    const data = {
+        budget: document.getElementById('budget').value,
+        location: document.getElementById('location').value,
+        health_goal: document.getElementById('health_goal').value,
+        dietary_preferences: document.getElementById('dietary_preferences').value
+    };
+
+    // 添加用户配置信息（如果存在）
+    const userProfile = localStorage.getItem('userProfile');
+    if (userProfile) {
+        const profile = JSON.parse(userProfile);
+        Object.assign(data, profile);
+    }
+
+    try {
+        const response = await fetch('/economical', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        console.log('前端接收的 JSON 数据:', result); // 调试前端接收的数据
+
+        if (result.error) {
+            resultDiv.innerHTML = `<p class="error-text" style="color: red;">${result.error}</p>`;
+            resultDiv.style.display = 'block';
+            loadingSpinner.style.display = 'none';
+            form.style.opacity = '1';
+            return;
+        }
+
+        // 创建推荐结果HTML
+        let economicalHtml = '<div class="recommendations-wrapper">';
+
+        // 处理三餐推荐
+        ['早餐推荐', '午餐推荐', '晚餐推荐'].forEach(mealType => {
+            const mealData = result[mealType] || {};
+            const foods = Array.isArray(mealData['推荐食材']) ? mealData['推荐食材'] : [];
+            economicalHtml += `
+                <div class="meal-recommendation-card">
+                    <div class="meal-header">
+                        <h3>${mealType}</h3>
+                    </div>
+                    <div class="meal-content">
+                        <div class="recommendation-section">
+                            <h4>推荐食材</h4>
+                            <ul>
+                                ${foods.length > 0 ? 
+                                    foods.map(item => `<li>${item.name || '未知食材'} (${item.quantity || '未知份量'})</li>`).join('') : 
+                                    '<li>暂无推荐食材</li>'}
+                            </ul>
+                        </div>
+                        <div class="recommendation-section">
+                            <h4>预计费用</h4>
+                            <p>${mealData['预计费用'] != null ? mealData['预计费用'] + ' 元' : '暂无费用信息'}</p>
+                        </div>
+                        <div class="recommendation-section">
+                            <h4>营养价值</h4>
+                            <p>${mealData['营养价值'] || '暂无营养信息'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // 添加省钱建议
+        const savingTips = Array.isArray(result['省钱建议']) ? result['省钱建议'] : [];
+        if (savingTips.length > 0) {
+            economicalHtml += `
+                <div class="nutrition-advice-card">
+                    <h3>省钱建议</h3>
+                    <ul>
+                        ${savingTips.map(tip => `<li>${tip}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // 添加总费用
+        economicalHtml += `
+            <div class="nutrition-advice-card">
+                <h3>总费用</h3>
+                <p>${result['总费用'] != null ? result['总费用'] + ' 元' : '暂无总费用信息'}</p>
+            </div>
+        `;
+
+        economicalHtml += '</div>';
+
+        // 显示结果
+        resultDiv.innerHTML = economicalHtml;
+        resultDiv.style.display = 'block';
+        resultDiv.classList.add('fade-in');
+
+        // 隐藏加载动画
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+    } catch (error) {
+        console.error('前端错误:', error);
+        resultDiv.innerHTML = '<p class="error-text" style="color: red;">获取经济型饮食推荐失败，请稍后重试</p>';
+        resultDiv.style.display = 'block';
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+    }
+});
+</script>
+{% endblock %}

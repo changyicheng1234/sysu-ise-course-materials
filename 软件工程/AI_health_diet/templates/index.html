@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>欢迎使用AI健康饮食助手</h1>
+    <p>为您提供专业的饮食建议和健康食谱推荐</p>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <h2>推荐食谱</h2>
+        <p>根据您的健康目标和饮食偏好，为您推荐个性化的健康食谱。</p>
+        <a href="{{ url_for('recommend') }}" class="btn">开始使用</a>
+    </div>
+    
+    <div class="feature-card">
+        <h2>分析三餐</h2>
+        <p>分析您的一日三餐，提供详细的营养成分分析和改善建议。</p>
+        <a href="{{ url_for('analyze') }}" class="btn">开始使用</a>
+    </div>
+    
+    <div class="feature-card">
+        <h2>生成菜谱</h2>
+        <p>为您生成详细的菜谱，包含食材清单和烹饪步骤。</p>
+        <a href="{{ url_for('recipe') }}" class="btn">开始使用</a>
+    </div>
+
+    <div class="feature-card">
+        <h2>外卖推荐</h2>
+        <p>根据您的口味和预算，推荐健康的本地外卖菜品。</p>
+        <a href="{{ url_for('takeout') }}" class="btn">开始使用</a>
+    </div>
+
+    <div class="feature-card">
+        <h2>经济饮食</h2>
+        <p>在保证营养比较均衡的情况下，为您推荐最经济的饮食方法</p>
+        <a href="{{ url_for('economical') }}" class="btn">开始使用</a>
+    </div>
+</div>
+{% endblock %}

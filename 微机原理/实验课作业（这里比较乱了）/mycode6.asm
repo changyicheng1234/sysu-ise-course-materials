@@ -1,0 +1,48 @@
+DATA SEGMENT
+    START_DATA DB 56H,4DH,5DH,52H,
+    DB 64H,47H,51H,5BH,4FH,61H
+DATA ENDS
+CODE SEGMENT
+ASSUME CS:CODE, DS:DATA
+START:MOV AX,DATA
+      MOV DS,AX
+      MOV DI,3000H
+      MOV SI,OFFSET START_DATA
+      MOV CX,10
+LOOP1:MOV AL,[SI]
+      MOV [DI],AL
+      INC DI
+      INC SI
+      LOOP LOOP1
+
+      MOV CX,9   
+      MOV SI,3000H
+LOOP2:INC SI
+      CMP AL,[SI] 
+      JA NEXT1
+      MOV AL,[SI]
+      MOV DX,SI
+NEXT1:LOOP LOOP2      
+      
+      MOV BX,3100H
+      SUB DX,3000H
+      MOV [BX],DX
+      MOV [BX+1],AL
+      
+      MOV CX,9
+      MOV SI,3000H      
+LOOP3:INC SI
+      CMP AL,[SI]
+      JB NEXT2 
+      MOV AL,[SI]
+      MOV DX,SI
+NEXT2:LOOP LOOP3
+      
+      MOV BX,3200H
+      SUB DX,3000H
+      MOV [BX],DX
+      MOV [BX+1],AL  
+      MOV AH,4CH
+      INT 21H
+CODE ENDS
+END START

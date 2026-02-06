@@ -1,0 +1,23 @@
+.load{
+    background-color:#04BE02;
+    width: 100%;
+    height: 400rpx;
+    /*设置图片和文字垂直居中对齐*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .load image{
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 50%;
+  }
+  .load text{
+    color:white;
+  }
+  .exit{
+    width: 95%;
+    margin-top: 40rpx;
+  }

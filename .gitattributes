@@ -1,0 +1,31 @@
+# 统一处理行尾符
+* text=auto
+
+# 源代码文件使用 LF（Unix 风格）
+*.go text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+
+# 二进制文件
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.rar binary
+*.7z binary
+*.dll binary
+*.exe binary
+*.mp4 binary
+*.MOV binary
+*.avi binary

@@ -1,0 +1,94 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# 编辑器
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+~$*
+
+# Git
+*.orig
+
+# 个人文件（可选，根据需要添加）
+# *个人信息*
+# *学号*
+
+# 大文件和压缩包（排除以加快上传速度）
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tar
+
+# 视频文件（通常很大）
+*.mp4
+*.MOV
+*.avi
+*.mkv
+*.flv
+*.wmv
+
+# 动态链接库
+*.dll
+*.so
+*.dylib
+
+# 大图片目录（排除以减小仓库大小）
+计算机视觉/Plant-Pathology-sysu-2023-main/
+自然语言处理/常毅成小组_期中大作业/text-to-lora/text-to-lora/
+
+# 大图片文件
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.ico
+
+# 数据集和模型文件
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.model
+*.weights
+
+# 数据文件
+*.csv
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.sqlite3
+
+# PDF文件（通常很大）
+*.pdf

@@ -1,0 +1,10 @@
+<!--pages/input/index.wxml-->
+<view data-weui-theme="{{theme}}">
+  <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+    <image class="avatar" src="{{avatarUrl}}"></image>
+  </button> 
+<input type="nickname" class="section" placeholder="请输入昵称" bindinput="onChooseNickName" />
+  <view class="area">
+  <button style="margin: 30rpx 0" class="goto" bindtap="goto" type="primary">确定</button>
+  </view>
+</view>

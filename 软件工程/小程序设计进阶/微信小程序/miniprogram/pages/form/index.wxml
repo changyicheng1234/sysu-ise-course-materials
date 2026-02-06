@@ -1,0 +1,19 @@
+<view>
+  <form bindsubmit="submit">  <view class="section">
+      <view class="title">组长昵称</view>
+      <input type="nickname" class="input" name="nickname" placeholder="输入你的昵称" value="{{nickname}}" />
+      </view>
+    <view class="section">
+      <view class="title">学号</view>
+      <input type="number" class="input" name="number" placeholder="输入你的学号" />
+    </view>
+    <view class="section">
+      <view class="title">小组名称</view>
+      <input type="nickname" class="input" name="groupName" placeholder="输入小组名称" />
+    </view>
+    <view class="area">
+      <button style="margin: 30rpx 0" type="primary" formType="submit">提交</button>
+      <button style="margin: 30rpx 0" formType="reset">重置</button>
+    </view>
+  </form>
+</view>

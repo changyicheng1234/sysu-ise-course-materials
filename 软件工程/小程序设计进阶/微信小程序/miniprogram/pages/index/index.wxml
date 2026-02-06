@@ -1,0 +1,14 @@
+<view>
+  <view class="choose">
+    <block wx:if="{{!isLoggedIn}}">
+      <navigator class="join" url="/pages/input/index">登录</navigator>
+      </block>
+
+    <block wx:else>
+      <navigator class="join" url="/pages/form/index">创建小组</navigator>
+      <navigator class="join" url="/pages/list/index">小组列表</navigator>
+      <navigator class="join" url="/pages/modify/index">修改小组名称</navigator>
+      </block>
+  </view>
+
+  </view>

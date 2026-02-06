@@ -1,0 +1,27 @@
+/* pages/join/index.wxss */
+.body {
+    margin: 40rpx;
+  }
+  .section {
+    margin: 40rpx 20rpx 80rpx;
+  }
+  .title {
+    font-size: 36rpx;
+    padding: 20rpx 20rpx;
+  }
+  .input {
+    margin: 30rpx 0;
+    border-bottom: 1px solid #666;
+    padding: 20rpx 20rpx;
+    width: 100%;
+  }
+  .mg {
+    margin: 30rpx 30rpx;
+  }
+  .area {
+    margin: 100rpx auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }

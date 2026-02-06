@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="card">
+    <div class="feature-intro">
+        <h2><i class="fas fa-utensils"></i> 外卖推荐</h2>
+        <p class="intro-text">
+            输入您想吃的外卖类型、口味偏好、预算和所在地区，我们将为您推荐适合的健康外卖菜品。
+        </p>
+    </div>
+    <form id="takeoutForm">
+        <div class="form-group">
+            <label for="takeout_type">外卖类型与口味</label>
+            <input type="text" id="takeout_type" required placeholder="请输入想吃的外卖类型以及口味喜好">
+        </div>
+        <div class="form-group">
+            <label for="price">外卖价格</label>
+            <input type="text" id="price" required placeholder="请输入期望的外卖价格">
+        </div>
+        <div class="form-group">
+            <label for="location">所在地区</label>
+            <input type="text" id="location" required placeholder="请输入您的所在地区，以便推荐合适的外卖菜品">
+        </div>
+        <button type="submit" class="btn">获取推荐</button>
+    </form>
+
+    <!-- 加载动画 -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p class="loading-text">正在生成外卖推荐...</p>
+    </div>
+
+    <div id="takeout-result" style="display: none;">
+        <div class="section">
+            <h3>推荐外卖菜品</h3>
+            <ul id="dishes-list"></ul>
+        </div>
+
+        <div class="section">
+            <h3>营养分析</h3>
+            <div id="nutrition-info"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('takeoutForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultDiv = document.getElementById('takeout-result');
+
+    // 重置显示区域
+    const dishesList = document.getElementById('dishes-list');
+    const nutritionInfo = document.getElementById('nutrition-info');
+
+    dishesList.innerHTML = '';
+    nutritionInfo.innerHTML = '';
+
+    try {
+        form.style.opacity = '0.5';
+        loadingSpinner.style.display = 'block';
+        resultDiv.style.display = 'none';
+
+        const response = await fetch('/takeout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                takeout_type: document.getElementById('takeout_type').value,
+                price: document.getElementById('price').value,
+                location: document.getElementById('location').value
+            })
+        });
+
+        const result = await response.json();
+        console.log('API返回数据:', result);
+
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
+        // 更新外卖菜品列表
+        if (Array.isArray(result.dishes_list) && result.dishes_list.length > 0) {
+            dishesList.innerHTML = result.dishes_list
+                .map(dish => {
+                    if (typeof dish === 'string') {
+                        return `<li>${dish}</li>`;
+                    }
+                    const name = dish.name || '';
+                    const price = dish.price || '';
+                    return `<li>${name} (约${price})</li>`;
+                })
+                .join('');
+        } else {
+            dishesList.innerHTML = '<li>暂无推荐菜品</li>';
+        }
+
+        // 更新营养分析
+        const nutrition = result.nutritional_analysis;
+        if (nutrition) {
+            let nutritionHtml = '';
+            if (typeof nutrition === 'string') {
+                const nutritionLines = nutrition
+                    .split(/\n/)
+                    .map(line => line.trim())
+                    .filter(line => line && !line.startsWith('营养分析'));
+
+                nutritionHtml = nutritionLines
+                    .map(line => {
+                        const match = line.match(/(.*?)[:：](.*)/);
+                        if (match) {
+                            const [, label, value] = match;
+                            return `<p>${label.trim()}: ${value.trim()}</p>`;
+                        }
+                        return `<p>${line}</p>`;
+                    })
+                    .join('');
+            } else if (typeof nutrition === 'object') {
+                const items = {
+                    calories: '热量',
+                    protein: '蛋白质',
+                    fat: '脂肪',
+                    carbs: '碳水化合物'
+                };
+
+                Object.entries(items).forEach(([key, label]) => {
+                    if (key in nutrition) {
+                        const value = nutrition[key];
+                        let displayValue = value;
+                        if (typeof value === 'string') {
+                            const numMatch = value.match(/\d+(\.\d+)?/);
+                            if (numMatch) {
+                                displayValue = numMatch[0];
+                            }
+                        }
+                        nutritionHtml += `<p>${label}: ${displayValue} ${key === 'calories' ? '千卡' : '克'}</p>`;
+                    }
+                });
+            }
+            nutritionInfo.innerHTML = nutritionHtml || '<p>暂无营养数据</p>';
+        } else {
+            nutritionInfo.innerHTML = '<p>暂无营养数据</p>';
+        }
+
+        resultDiv.style.display = 'block';
+
+    } catch (error) {
+        console.error('错误:', error);
+        alert(`获取外卖推荐失败: ${error.message}`);
+        dishesList.innerHTML = '<li>生成失败</li>';
+        nutritionInfo.innerHTML = '<p>生成失败</p>';
+    } finally {
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+    }
+});
+</script>
+{% endblock %}

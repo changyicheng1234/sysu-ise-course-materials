@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="feature-intro">
+        <h2><i class="fas fa-utensils"></i> 个性化食谱推荐</h2>
+        <p class="intro-text">
+            基于您的健康目标和饮食偏好，为您提供一日三餐的个性化推荐。
+            我们会根据您的营养需求，确保每一餐都营养均衡，并符合您的口味习惯。
+        </p>
+    </div>
+    <form id="recommendForm">
+        <div class="form-group">
+            <label for="health_goal">您的健康目标</label>
+            <input type="text" id="health_goal" required placeholder="如：减重、增肌、控制血糖等">
+        </div>
+        <div class="form-group">
+            <label for="dietary_preferences">饮食偏好</label>
+            <input type="text" id="dietary_preferences" required placeholder="如：低脂、高蛋白、素食等">
+        </div>
+        <div class="form-group">
+            <label for="lifestyle">生活习惯</label>
+            <textarea id="lifestyle" required placeholder="请描述您的生活习惯，包括运动、作息等"></textarea>
+        </div>
+        <button type="submit" class="btn">获取推荐</button>
+    </form>
+    
+    <!-- 添加加载动画 -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p class="loading-text">正在为您生成个性化推荐...</p>
+    </div>
+    
+    <div id="recommendResult" class="result" style="display: none;"></div>
+</div>
+
+<script>
+document.getElementById('recommendForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultDiv = document.getElementById('recommendResult');
+    
+    // 显示加载动画
+    form.style.opacity = '0.5';
+    loadingSpinner.style.display = 'block';
+    resultDiv.style.display = 'none';
+    
+    const data = {
+        health_goal: document.getElementById('health_goal').value,
+        dietary_preferences: document.getElementById('dietary_preferences').value,
+        lifestyle: document.getElementById('lifestyle').value
+    };
+
+    // 添加用户配置信息（如果存在）
+    const userProfile = localStorage.getItem('userProfile');
+    if (userProfile) {
+        const profile = JSON.parse(userProfile);
+        Object.assign(data, profile);
+    }
+
+    const healthStats = localStorage.getItem('healthStats');
+    if (healthStats) {
+        const stats = JSON.parse(healthStats);
+        data.daily_calories = stats.daily_calories;
+        data.daily_nutrition = stats.daily_nutrition;
+        data.bmi = stats.bmi;
+    }
+    
+    try {
+        const response = await fetch('/recommend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        // 创建推荐结果HTML
+        let recommendHtml = '<div class="recommendations-wrapper">';
+        
+        // 处理三餐推荐
+        ['早餐推荐', '午餐推荐', '晚餐推荐'].forEach(mealType => {
+            const mealData = result[mealType];
+            recommendHtml += `
+                <div class="meal-recommendation-card">
+                    <div class="meal-header">
+                        <h3>${mealType}</h3>
+                    </div>
+                    <div class="meal-content">
+                        <div class="recommendation-section">
+                            <h4>推荐食物</h4>
+                            <ul>
+                                ${Array.isArray(mealData.推荐食物) ? 
+                                    mealData.推荐食物.map(food => `<li>${food}</li>`).join('') : 
+                                    `<li>${mealData.推荐食物 || '暂无推荐'}</li>`}
+                            </ul>
+                        </div>
+                        <div class="recommendation-section">
+                            <h4>营养价值</h4>
+                            <p>${mealData.营养价值 || '暂无信息'}</p>
+                        </div>
+                        <div class="recommendation-section">
+                            <h4>食用建议</h4>
+                            <p>${mealData.食用建议 || '暂无建议'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        // 添加营养建议
+        if (result.营养建议) {
+            recommendHtml += `
+                <div class="nutrition-advice-card">
+                    <h3>营养建议</h3>
+                    <p>${result.营养建议}</p>
+                </div>
+            `;
+        }
+        
+        recommendHtml += '</div>';
+        
+        // 显示结果
+        resultDiv.innerHTML = recommendHtml;
+        resultDiv.style.display = 'block';
+        resultDiv.classList.add('fade-in');
+        
+        // 隐藏加载动画
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+    } catch (error) {
+        console.error('Error:', error);
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+        alert('获取推荐失败，请稍后重试');
+    }
+});
+</script>
+{% endblock %}

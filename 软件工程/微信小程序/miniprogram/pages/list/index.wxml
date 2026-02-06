@@ -1,0 +1,38 @@
+<!--pages/list/index.wxml-->
+<view class="page">
+    <!--wx:for可以理解为一个带有view的for循环-->
+    <view wx:for="{{groupList}}" wx:for-item="group" wx:key="groupID"> <!--这里的group就是for循环的变量-->
+        <navigator url="/pages/join/index?groupID={{group.groupID}}" class="card">
+        <!--这里点击小组后，通过?groupID={{group.groupID}}就会自动将该小组的groupID发送到join/index.js中，跳转到form页面-->
+        <!--wx:for文档：https://developers.weixin.qq.com/miniprogram/dev/reference/wxml/list.html-->
+            <view class="tips">点击即可加入小组</view>
+            <view class="txt">
+                <view class="title">小组名称:</view>
+                <view class="info">{{group.groupName}}</view>
+            </view>
+            <view class="txt">
+                <view class="title">组号：</view>
+                <view class="info">{{group.groupID}}</view>
+            </view>
+            <view class="txt">
+                <view class="title">组长：</view>
+                <view class="info">{{group.leaderName}}</view>
+            </view>
+            <view class="txt">
+                <view class="title">人数：</view>
+                <view class="info">{{group.member}}</view>
+            </view>
+            <view>
+                <view class="title">成员昵称：</view>
+                <view wx:for="{{group.memberName}}" wx:for-item="nickname">
+                      <view class="info">{{nickname}}</view>
+                </view>
+            </view>
+        </navigator>
+    </view>
+    <view>
+        <view class="toast">已无更多小组</view>
+        <!--跳转到form页面-->
+        <navigator open-type="redirect" url="/pages/form/index" class="join">点这里去自行创建小组</navigator>
+    </view>
+</view>

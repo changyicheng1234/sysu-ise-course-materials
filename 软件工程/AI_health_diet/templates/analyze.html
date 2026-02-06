@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="card">
+    <div class="feature-intro">
+        <h2><i class="fas fa-chart-pie"></i> 三餐分析</h2>
+        <p class="intro-text">
+            输入您的一日三餐内容，我们将为您提供专业的营养分析和改善建议。
+            通过详细分析每餐的营养构成，帮助您了解饮食是否均衡，并针对性地提供改进方案。
+        </p>
+    </div>
+    <form id="analyzeForm">
+        <div class="form-group">
+            <label for="breakfast">早餐内容</label>
+            <textarea id="breakfast" required placeholder="请输入早餐内容，尽量详细描述用量"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="lunch">午餐内容</label>
+            <textarea id="lunch" required placeholder="请输入午餐内容，尽量详细描述用量"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="dinner">晚餐内容</label>
+            <textarea id="dinner" required placeholder="请输入晚餐内容，尽量详细描述用量"></textarea>
+        </div>
+        <button type="submit" class="btn">分析营养</button>
+    </form>
+    
+    <!-- 添加加载动画 -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p class="loading-text">正在分析营养成分...</p>
+    </div>
+    
+    <div id="analyzeResult" class="result meal-analysis-grid" style="display: none;">
+        <div class="meal-analysis-card">
+            <div class="meal-header">
+                <h3>早餐分析</h3>
+            </div>
+            <div class="meal-analysis-content" id="breakfastAnalysis"></div>
+        </div>
+        
+        <div class="meal-analysis-card">
+            <div class="meal-header">
+                <h3>午餐分析</h3>
+            </div>
+            <div class="meal-analysis-content" id="lunchAnalysis"></div>
+        </div>
+        
+        <div class="meal-analysis-card">
+            <div class="meal-header">
+                <h3>晚餐分析</h3>
+            </div>
+            <div class="meal-analysis-content" id="dinnerAnalysis"></div>
+        </div>
+        
+        <div class="meal-analysis-card nutrition-advice">
+            <div class="meal-header">
+                <h3>营养建议</h3>
+            </div>
+            <div class="meal-analysis-content" id="nutritionAdvice"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('analyzeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultDiv = document.getElementById('analyzeResult');
+    
+    try {
+        form.style.opacity = '0.5';
+        loadingSpinner.style.display = 'block';
+        resultDiv.style.display = 'none';
+        
+        const response = await fetch('/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                meals: {
+                    breakfast: document.getElementById('breakfast').value.trim(),
+                    lunch: document.getElementById('lunch').value.trim(),
+                    dinner: document.getElementById('dinner').value.trim()
+                }
+            })
+        });
+
+        const result = await response.json();
+        console.log('分析结果:', result);  // 调试日志
+        
+        // 更新分析结果显示
+        function updateAnalysis(elementId, content) {
+            const element = document.getElementById(elementId);
+            if (!content || content === '暂无分析数据' || content === '分析失败，请重试') {
+                element.innerHTML = `<p class="analysis-content warning">${content || '暂无数据'}</p>`;
+            } else {
+                // 将内容按句号分割并处理
+                const sentences = content.split(/[。！？]/).filter(s => s.trim());
+                element.innerHTML = sentences
+                    .map(s => `<p class="analysis-content">${s.trim()}。</p>`)
+                    .join('');
+            }
+        }
+
+        updateAnalysis('breakfastAnalysis', result['早餐分析']);
+        updateAnalysis('lunchAnalysis', result['午餐分析']);
+        updateAnalysis('dinnerAnalysis', result['晚餐分析']);
+        updateAnalysis('nutritionAdvice', result['营养建议']);
+
+        // 显示结果
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+        resultDiv.style.display = 'grid';
+        resultDiv.classList.add('fade-in');
+        
+    } catch (error) {
+        console.error('分析失败:', error);
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+        alert('分析失败，请稍后重试');
+    }
+});
+</script>
+
+<style>
+.meal-analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.meal-analysis-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.meal-analysis-card:hover {
+    transform: translateY(-2px);
+}
+
+.meal-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.meal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.meal-analysis-content {
+    padding: 15px;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.analysis-content {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.analysis-content.warning {
+    color: #666;
+    font-style: italic;
+}
+
+.analysis-content:last-child {
+    margin-bottom: 0;
+}
+
+.nutrition-advice {
+    grid-column: 1 / -1;
+}
+
+.nutrition-advice .meal-header {
+    background: #2196F3;
+}
+
+.nutrition-advice .meal-analysis-content {
+    background: #f8f9fa;
+    border-left: 4px solid #17a2b8;
+}
+
+/* 功能介绍样式 */
+.feature-intro {
+    background: linear-gradient(to right, var(--primary-color), #2196F3);
+    color: white;
+    padding: 2rem;
+    border-radius: 8px 8px 0 0;
+    margin: -2rem -2rem 2rem -2rem;
+    text-align: center;
+}
+
+.feature-intro h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.feature-intro i {
+    margin-right: 0.5rem;
+}
+
+/* 添加响应式调整 */
+@media (max-width: 768px) {
+    .feature-intro {
+        padding: 1.5rem;
+    }
+    
+    .feature-intro h2 {
+        font-size: 1.5rem;
+    }
+    
+    .intro-text {
+        font-size: 1rem;
+    }
+}
+</style>
+{% endblock %}

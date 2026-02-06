@@ -1,0 +1,18 @@
+num = [1,5,6];
+den = [1,2,1,0];
+[r,p,k] = residue(num,den)
+syms s;
+H = 0;  % 初始化传递函数 H(s)
+
+% 将 R 和 P 的部分分式求和
+for i = 1:length(r)
+    H = H + r(i)/(s - p(i));  % 构造每个部分分式
+end
+
+% 如果 K 非空，加入多项式部分
+if ~isempty(K)
+    H = H + poly2sym(, s);  % K 是多项式部分
+end
+
+% 显示部分分式展开结果
+pretty(H)

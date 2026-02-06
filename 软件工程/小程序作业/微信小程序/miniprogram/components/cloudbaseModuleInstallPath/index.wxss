@@ -1,0 +1,7 @@
+.tip {
+  font-size: 23rpx;
+  color: rgba(0, 0, 0, 0.5);
+  width: 90%;
+  text-align: center;
+  margin: 30rpx auto 0 auto;
+}

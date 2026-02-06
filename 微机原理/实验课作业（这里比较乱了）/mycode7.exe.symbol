@@ -1,0 +1,17 @@
+< THE SYMBOL TABLE >  mycode7.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+DATA                     	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA_START               	00000     	1         	VAR       	DATA      
+CODE                     	00001     	-5        	SEGMENT   	(ITSELF)  
+START                    	00000     	-1        	LABEL     	CODE      
+COUNT                    	00011     	-1        	LABEL     	CODE      
+COUNT_PRO                	00027     	-1        	NEAR      	CODE      
+CHECK                    	0002A     	-1        	LABEL     	CODE      
+LOW                      	00031     	-1        	LABEL     	CODE      
+CONTINUE                 	00032     	-1        	LABEL     	CODE      
+===================================================================================================
+[ 2024/6/16  --  19:18:08 ] 
+< END >
+ 

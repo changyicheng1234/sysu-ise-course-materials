@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特朗普的政治策略</title>
+    <style>
+        body {
+            font: 16px/28px 'Microsoft YaHei';
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-weight: 400;
+            text-align: center;
+            font-size: 28px;
+        }
+        h2 {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+        }
+        p {
+            text-indent: 2em;
+            color: #444;
+            line-height: 1.8;
+        }
+        .keyword {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .keyword:hover {
+            text-decoration: underline;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+        .image-container img {
+            width: 300px;
+            height: auto;
+        }
+        .image-caption {
+            display: none;
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 5px;
+        }
+        .image-container:hover .image-caption {
+            display: block;
+        }
+        .news-list {
+            margin-top: 20px;
+        }
+        .news-list li {
+            list-style-type: none;
+            margin: 10px 0;
+        }
+        .news-list a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .news-list a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const news = [
+                { title: "特朗普支持率再创新高：民调显示超六成共和党人支持", link: "#" },
+                { title: "宪法专家解读：第三任期是否可能实现？", link: "#" },
+                { title: "2024大选前瞻：特朗普仍是共和党领跑者", link: "#" },
+                { title: "拜登回应特朗普言论：民主不容挑战", link: "#" }
+            ];
+            news.forEach(item => {
+                $('.news-list').append(`<li><a href="${item.link}">${item.title}</a></li>`);
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>特朗普的政治策略</h1>
+    <h2>言论背后的意图</h2>
+    <p>特朗普提到“第三个总统任期”并非首次。在他2020年竞选连任失败后，就曾多次试探性地抛出类似话题，引发外界猜测。如今，他将这一言论升级，并以“我没在开玩笑”的语气加以强调，显示出更强的政治意图。政治分析家指出，这是一种经典的<a href="index.html#amendment22" class="keyword">舆论测试</a>，旨在观察选民、媒体和对手的反应，同时为自己的政治品牌注入新的活力。</p>
+
+    <div class="image-container">
+        <img src="集会.jpg" alt="特朗普集会">
+        <div class="image-caption">特朗普的支持者在集会上挥舞旗帜</div>
+    </div>
+
+    <h2>策略的历史回顾</h2>
+    <p>回顾特朗普的政治生涯，他善于利用争议性言论制造话题。从2016年的“建墙”承诺，到2020年的“选举舞弊”指控，每一次爆炸性言论都让他成为媒体焦点。这种策略不仅巩固了核心支持群体，还迫使对手被动应对。如今，“第三任期”的说法延续了这一风格，可能意在为<a href="#" class="keyword">2024美国大选</a>铺路。</p>
+
+    <p>值得注意的是，特朗普的团队并未对此言论作出明确澄清。一些幕僚私下表示，这只是“老板的即兴发挥”，但也有人认为，这可能是精心策划的一步棋，旨在测试共和党内外的支持力度。无论真相如何，这一言论已成功将特朗普重新拉回公众视野。</p>
+
+    <div class="image-container">
+        <img src="选民.jpg" alt="选民支持">
+        <div class="image-caption">选民在投票站外排队</div>
+    </div>
+
+    <h2>相关新闻推荐</h2>
+    <ul class="news-list"></ul>
+
+    <p>总的来说，特朗普的“第三任期”言论不仅是一场政治表演，更可能是他重返权力中心的前奏。随着2024年大选临近，这位前总统的影响力仍不容小觑。</p>
+</body>
+</html>

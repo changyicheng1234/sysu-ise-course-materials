@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI健康饮食助手</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">AI健康饮食助手</div>
+        <ul class="nav-menu">
+            <li><a href="{{ url_for('index') }}">首页</a></li>
+            <li><a href="{{ url_for('profile') }}">个人信息</a></li>
+            <li><a href="{{ url_for('recommend') }}">推荐食谱</a></li>
+            <li><a href="{{ url_for('analyze') }}">分析三餐</a></li>
+            <li><a href="{{ url_for('recipe') }}">生成菜谱</a></li>
+            <li><a href="{{ url_for('takeout') }}">外卖推荐</a></li>
+            <li><a href="{{ url_for('economical') }}">经济饮食</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>© AI健康饮食助手 - SYSU</p>
+    </footer>
+</body>
+</html>

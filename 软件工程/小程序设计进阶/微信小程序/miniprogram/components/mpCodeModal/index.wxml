@@ -1,0 +1,8 @@
+<view class="modal_container" wx:if="{{ modalVisible }}">
+  <view class="icon_close" bind:tap="onClose">
+    <view>X</view>
+  </view>
+  <view class="image_container">
+    <image class="code_img" src="{{ imageSrc }}" />
+  </view>
+</view>

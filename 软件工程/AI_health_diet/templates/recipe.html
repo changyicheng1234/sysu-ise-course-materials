@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="card">
+    <div class="feature-intro">
+        <h2><i class="fas fa-book-open"></i> 智能菜谱生成</h2>
+        <p class="intro-text">
+            输入想要制作的菜品名称，我们将为您生成详细的制作步骤和营养分析。
+            结合您所在地区的特色，推荐最适合的烹饪方法和食材搭配。
+        </p>
+    </div>
+    <form id="recipeForm">
+        <div class="form-group">
+            <label for="recipe_name">菜品名称</label>
+            <input type="text" id="recipe_name" required placeholder="请输入想要制作的菜品名称">
+        </div>
+        <div class="form-group">
+            <label for="location">所在地区</label>
+            <input type="text" id="location" required placeholder="请输入您的所在地区，以便推荐合适的食材">
+        </div>
+        <button type="submit" class="btn">生成菜谱</button>
+    </form>
+    
+    <!-- 添加加载动画 -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p class="loading-text">正在生成菜谱详情...</p>
+    </div>
+    
+    <div id="recipe-result" style="display: none;">
+        <div class="section">
+            <h3>所需食材</h3>
+            <ul id="ingredients-list"></ul>
+        </div>
+        
+        <div class="section">
+            <h3>烹饪步骤</h3>
+            <ol id="cooking-steps"></ol>
+        </div>
+        
+        <div class="section">
+            <h3>营养分析</h3>
+            <div id="nutrition-info"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('recipeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const resultDiv = document.getElementById('recipe-result');
+    
+    // 重置显示区域
+    const ingredientsList = document.getElementById('ingredients-list');
+    const cookingSteps = document.getElementById('cooking-steps');
+    const nutritionInfo = document.getElementById('nutrition-info');
+    
+    ingredientsList.innerHTML = '';
+    cookingSteps.innerHTML = '';
+    nutritionInfo.innerHTML = '';
+    
+    try {
+        form.style.opacity = '0.5';
+        loadingSpinner.style.display = 'block';
+        resultDiv.style.display = 'none';
+        
+        const response = await fetch('/recipe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                recipe_name: document.getElementById('recipe_name').value,
+                location: document.getElementById('location').value
+            })
+        });
+
+        const result = await response.json();
+        console.log('API返回数据:', result);
+
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
+        // 更新食材列表
+        if (Array.isArray(result.ingredients_list) && result.ingredients_list.length > 0) {
+            ingredientsList.innerHTML = result.ingredients_list
+                .map(ingredient => {
+                    if (typeof ingredient === 'string') {
+                        return `<li>${ingredient}</li>`;
+                    }
+                    const name = ingredient.item_name || ingredient.name || '';
+                    const quantity = ingredient.quantity || ingredient.amount || '';
+                    return `<li>${name} ${quantity}</li>`;
+                })
+                .join('');
+        } else {
+            ingredientsList.innerHTML = '<li>暂无食材数据</li>';
+        }
+
+        // 更新烹饪步骤
+        if (result.cooking_process) {
+            let steps;
+            if (typeof result.cooking_process === 'string') {
+                // 处理包含"步骤"或"："的文本
+                steps = result.cooking_process
+                    .split(/[：:、。]/g)  // 按标点符号分割
+                    .filter(step => {
+                        const trimmed = step.trim();
+                        return trimmed && !trimmed.includes('以下是') && !trimmed.includes('烹饪步骤');
+                    })
+                    .map(step => step.trim());
+            } else if (Array.isArray(result.cooking_process)) {
+                steps = result.cooking_process;
+            } else {
+                steps = [];
+            }
+            
+            cookingSteps.innerHTML = steps.length > 0 
+                ? steps
+                    .map((step, index) => `<li>${step}</li>`)
+                    .join('')
+                : '<li>暂无烹饪步骤</li>';
+        } else {
+            cookingSteps.innerHTML = '<li>暂无烹饪步骤</li>';
+        }
+
+        // 更新营养分析
+        const nutrition = result.nutritional_analysis;
+        if (nutrition) {
+            let nutritionHtml = '';
+            if (typeof nutrition === 'string') {
+                // 处理字符串格式的营养信息
+                const nutritionLines = nutrition
+                    .split(/\n/)
+                    .map(line => line.trim())
+                    .filter(line => line && !line.startsWith('营养分析'));
+                
+                nutritionHtml = nutritionLines
+                    .map(line => {
+                        // 提取数字和单位
+                        const match = line.match(/(.*?)[:：](.*)/);
+                        if (match) {
+                            const [, label, value] = match;
+                            return `<p>${label.trim()}: ${value.trim()}</p>`;
+                        }
+                        return `<p>${line}</p>`;
+                    })
+                    .join('');
+            } else if (typeof nutrition === 'object') {
+                const items = {
+                    calories: '热量',
+                    protein: '蛋白质',
+                    fat: '脂肪',
+                    carbs: '碳水化合物'
+                };
+                
+                Object.entries(items).forEach(([key, label]) => {
+                    if (key in nutrition) {
+                        const value = nutrition[key];
+                        let displayValue = value;
+                        
+                        // 如果值是字符串且包含数字，则保留数字部分
+                        if (typeof value === 'string') {
+                            const numMatch = value.match(/\d+(\.\d+)?/);
+                            if (numMatch) {
+                                displayValue = numMatch[0];
+                            }
+                        }
+                        
+                        nutritionHtml += `<p>${label}: ${displayValue} ${key === 'calories' ? '千卡' : '克'}</p>`;
+                    }
+                });
+            }
+            nutritionInfo.innerHTML = nutritionHtml || '<p>暂无营养数据</p>';
+        } else {
+            nutritionInfo.innerHTML = '<p>暂无营养数据</p>';
+        }
+
+        resultDiv.style.display = 'block';
+        
+    } catch (error) {
+        console.error('错误:', error);
+        alert(`生成菜谱失败: ${error.message}`);
+        ingredientsList.innerHTML = '<li>生成失败</li>';
+        cookingSteps.innerHTML = '<li>生成失败</li>';
+        nutritionInfo.innerHTML = '<p>生成失败</p>';
+    } finally {
+        loadingSpinner.style.display = 'none';
+        form.style.opacity = '1';
+    }
+});
+</script>
+{% endblock %}

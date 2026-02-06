@@ -1,0 +1,11 @@
+<!-- miniprogram/components/cloudTipModal/index.wxml -->
+<view class="install_tip" wx:if="{{ modalVisible }}">
+	<view class="install_tip_back" bindtap="hideModal" />
+	<view class="install_tip_detail">
+		<view class="install_tip_detail_title">体验前需安装云模板</view>
+		<view class="install_tip_detail_tip">请按照以下路径安装对应云模板</view>
+		<view class="install_tip_detail_shell">{{ tipText }}</view>
+		<view bindtap="onViewDetail" class="install_tip_detail_button">查看详情{{ installModuleName }}</view>
+	</view>
+</view>
+

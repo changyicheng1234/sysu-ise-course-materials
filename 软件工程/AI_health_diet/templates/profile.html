@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="card">
+    <div class="feature-intro">
+        <h2><i class="fas fa-user-circle"></i> 个人健康信息</h2>
+        <p class="intro-text">
+            填写您的基本健康信息，我们将为您计算BMI指数、基础代谢率等健康指标。
+            这些数据将帮助我们为您提供更精准的饮食建议和营养方案。
+        </p>
+    </div>
+    <form id="profileForm">
+        <div class="form-group">
+            <label for="gender">性别</label>
+            <select id="gender" required>
+                <option value="">请选择</option>
+                <option value="male">男</option>
+                <option value="female">女</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="age">年龄</label>
+            <input type="number" id="age" required min="1" max="120" placeholder="请输入年龄">
+        </div>
+        <div class="form-group">
+            <label for="height">身高(cm)</label>
+            <input type="number" id="height" required min="100" max="250" placeholder="请输入身高">
+        </div>
+        <div class="form-group">
+            <label for="weight">体重(kg)</label>
+            <input type="number" id="weight" required min="20" max="200" placeholder="请输入体重">
+        </div>
+        <div class="form-group">
+            <label for="activity">活动水平</label>
+            <select id="activity" required>
+                <option value="">请选择</option>
+                <option value="low">久坐不运动</option>
+                <option value="moderate">适度运动</option>
+                <option value="high">经常运动</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="health_goal">健康目标</label>
+            <select id="health_goal" required>
+                <option value="">请选择</option>
+                <option value="lose_weight">减重</option>
+                <option value="maintain">保持健康</option>
+                <option value="gain_muscle">增肌</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">保存信息</button>
+    </form>
+
+    <div id="healthStats" class="health-stats" style="display: none;">
+        <h3>健康指标分析</h3>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h4>BMI指数</h4>
+                <p id="bmiValue"></p>
+                <p id="bmiStatus"></p>
+            </div>
+            <div class="stat-item">
+                <h4>基础代谢率</h4>
+                <p id="bmrValue"></p>
+            </div>
+            <div class="stat-item">
+                <h4>每日建议摄入热量</h4>
+                <p id="calorieValue"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('profileForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+        gender: document.getElementById('gender').value,
+        age: parseInt(document.getElementById('age').value),
+        height: parseInt(document.getElementById('height').value),
+        weight: parseInt(document.getElementById('weight').value),
+        activity: document.getElementById('activity').value,
+        health_goal: document.getElementById('health_goal').value
+    };
+
+    try {
+        const response = await fetch('/save_profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        // 显示健康指标
+        document.getElementById('bmiValue').textContent = `${result.bmi.toFixed(1)}`;
+        document.getElementById('bmiStatus').textContent = getBMIStatus(result.bmi);
+        document.getElementById('bmrValue').textContent = `${result.bmr.toFixed(0)} 千卡/天`;
+        document.getElementById('calorieValue').textContent = `${result.daily_calories.toFixed(0)} 千卡/天`;
+        
+        document.getElementById('healthStats').style.display = 'block';
+        
+        // 保存到 localStorage
+        localStorage.setItem('userProfile', JSON.stringify(formData));
+        localStorage.setItem('healthStats', JSON.stringify(result));
+        
+        alert('个人信息保存成功！');
+    } catch (error) {
+        console.error('Error:', error);
+        alert('保存失败，请稍后重试');
+    }
+});
+
+function getBMIStatus(bmi) {
+    if (bmi < 18.5) return '体重偏低';
+    if (bmi < 24) return '体重正常';
+    if (bmi < 28) return '超重';
+    return '肥胖';
+}
+
+// 页面加载时恢复保存的数据
+window.addEventListener('load', () => {
+    const savedProfile = localStorage.getItem('userProfile');
+    if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        Object.keys(profile).forEach(key => {
+            const element = document.getElementById(key);
+            if (element) element.value = profile[key];
+        });
+    }
+});
+</script>
+{% endblock %}

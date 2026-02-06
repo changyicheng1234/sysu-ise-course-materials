@@ -1,0 +1,981 @@
+%!TeX program = xelatex
+\documentclass{SYSUReport}
+\usepackage{float}
+% 根据个人情况修改
+
+\headc{第六组第四次实验报告}
+
+\lessonTitle{自动控制原理第四次实验报告}
+\reportTitle{第六组}
+\stuname{郭皓玮、陈泓逸、常毅成、欧凯勋}
+\stuid{22354035、22354011、22354010、22354095}
+\inst{智能工程学院}
+\major{智能科学与技术}
+\date{\today}
+
+\begin{document}
+
+% =============================================
+% Part 1: 封面
+% =============================================
+\cover
+\thispagestyle{empty} % 首页不显示页码
+\clearpage
+% =============================================
+% Part 2： 摘要
+% =============================================
+%\begin{abstract}
+%
+%在此填写摘要内容
+%
+%\end{abstract}
+% \thispagestyle{empty} % 摘要页不显示页码
+% \clearpage
+
+
+% =============================================
+% Part 3： 目录页
+% =============================================
+% 重置页码，并使用罗马数字
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\tableofcontents
+\clearpage
+
+% =============================================
+% Part 4： 正文内容
+% =============================================
+% 重置页码，并使用阿拉伯数字
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%%可选择这里也放一个标题
+%\begin{center}
+%    \title{ \Huge \textbf{{标题}}}
+%\end{center}
+\section{实验目的}
+\begin{itemize}
+    \item 加深了解模拟典型环节频率特性的物理概念。
+    \item 掌握模拟典型环节频率特性的测试验证方法。
+    \item 掌握二阶控制系统频率特性的测试验证方法。
+    \item 学会根据频率特性建立系统的传递函数。
+    \item 了解实际频率特性与理想特性的不同，并确定近似条件。
+\end{itemize}
+\section{实验任务/要求}
+\begin{itemize}
+    \item 比例环节的频率特性测试验证。
+    \item 惯性环节的频率特性测试验证。
+    \item 积分环节的频率特性测试验证。
+    \item 比例微分环节的频率特性测试验证。
+    \item 二阶系统的频率特性测试验证。
+\end{itemize}
+\section{实验仪器、设备及材料}
+
+\begin{itemize}
+    \item 计算机
+    \item MATLAB软件
+\end{itemize}
+\section{实验原理}
+
+\begin{itemize}
+    \item 频域法测试系统或环节的频率特性
+    \item 由实验频率特性确定最小相位传递函数
+\end{itemize}
+
+\section{实验步骤}
+\subsection{比例环节的频率特性测试验证}
+比例环节的模拟电路如图1所示。在输入端接上高频正弦发生器，设定正弦波信号幅值为0.05V，用双踪示波器观察并记录输出与输入幅值的比和相位差。测试正弦信号从低频开始，开始频率可随着比例系数的增高而降低。当R配置10MΩ、1MΩ或100kΩ不同值时，开始频率可分别为1kHz、10kHz或100kHz。然后逐步提高测试正弦信号的频率，在伯德图上转折频率处，输出振幅减小或相位滞后，此时应多测试几组数据。然后增大测试信号频率间距，直到输出滞后于输入的相位约为180°为止。每次测试读取输出响应波形的峰值和与输入波形的相位差，将每组数据记录在表1中。
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{比例环节1.png}
+    \caption{比例环节图}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{4ba96badfa79107e09fe5b1fb5e05b3.png}
+    \caption{比例环节的simulink仿真}
+    \label{fig:enter-label}
+\end{figure}
+\begin{table}[H]
+\centering
+\caption{比例环节（$U_{im}=0.05V, R=100k\Omega, K=1$)}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$f$/Hz & $1000 \times 10^3$ & $100 \times 10^3$ & $10 \times 10^3$ & $1 \times 10^3$ & 100 \\ \hline
+$U_{om}$/V & 0.05 & 0.05 & 0.05 & 0.05 & 0.05 \\ \hline
+$20\lg(U_{om}/U_{im})$ & 0 & 0 & 0 & 0 & 0 \\ \hline
+相位差 $\phi$/($^\circ$) & 0 & 0 & 0 & 0 & 0 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1000×10^3, 100kΩ.png}
+    \caption{1000×10^3, 100k\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100×10^3, 100kΩ.png}
+    \caption{100×10^3, 100k\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{10×10^3, 100kΩ.png}
+    \caption{10×10^3, 100k\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1×10^3, 100kΩ.png}
+    \caption{1×10^3, 100k\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100, 100kΩ.png}
+    \caption{100, 100k\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+
+
+\begin{table}[H]
+\centering
+\caption{比例环节（$U_{im}=0.05V, R=1M\Omega, K=10$)}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$f$/Hz & $1000 \times 10^3$ & $100 \times 10^3$ & $10 \times 10^3$ & $1 \times 10^3$ & 100 \\ \hline
+$U_{om}$/V & 0.5 & 0.5 & 0.5 & 0.5 & 0.5 \\ \hline
+$20\lg(U_{om}/U_{im})$ & 20 & 20 & 20 & 20 & 20 \\ \hline
+相位差 $\phi$/($^\circ$) & 0 & 0 & 0 & 0 & 0 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1000×10^3, 1MΩ.png}
+    \caption{1000×10^3, 1M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100×10^3, 1MΩ.png}
+    \caption{100×10^3, 1M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{10×10^3, 1MΩ.png}
+    \caption{10×10^3, 1M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1×10^3, 1MΩ.png}
+    \caption{1×10^3, 1M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100, 1MΩ.png}
+    \caption{100, 1M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+
+\begin{table}[H]
+\centering
+\caption{比例环节（$U_{im}=0.05V, R=10M\Omega, K=100$)}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$f$/Hz & $1000 \times 10^3$ & $100 \times 10^3$ & $10 \times 10^3$ & $1 \times 10^3$ & 100 \\ \hline
+$U_{om}$/V & 5 & 5 & 5 & 5 & 5 \\ \hline
+$20\lg(U_{om}/U_{im})$ & 40 & 40 & 40 & 40 & 40 \\ \hline
+相位差 $\phi$/($^\circ$) & 0 & 0 & 0 & 0 & 0 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1000×10^3, 10MΩ.png}
+    \caption{1000×10^3, 10M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100×10^3, 10MΩ.png}
+    \caption{100×10^3, 10M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{10×10^3, 10MΩ.png}
+    \caption{10×10^3, 10M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1×10^3, 10MΩ.png}
+    \caption{1×10^3, 10M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100, 10MΩ.png}
+    \caption{100, 10M\Omega}
+    \label{fig:enter-label}
+\end{figure}
+\subsubsection{根据表格内数据描点}
+根据表格数据描点，规则是幅频特性的横轴是频率，纵轴是 \(20\lg\frac{U_{om}}{U_{im}}\)，相频特性的横轴是频率，纵轴是相位差，单位是度 \(\left({}^\circ\right)\)。
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={幅频特性},
+            xlabel={频率 (Hz)},
+            ylabel={$20\lg(\frac{U_{om}}{U_{im}})$ (dB)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        % 在这里添加您的数据点
+        \addplot table {
+            1000 0
+            100 0
+            10 0
+            1 0
+            0.1 0
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={相频特性},
+            xlabel={频率 (Hz)},
+            ylabel={相位差 $\varphi$ (°)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        % 在这里添加您的数据点
+        \addplot table {
+            1000 0
+            100 0
+            10 0
+            1 0
+            0.1 0
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{根据表格画出的幅频特性和相频特性图表}
+\end{figure}
+\subsubsection{与MATLAB所画的比例环节伯德图相比较}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{比例环节伯德图代码.png}
+    \caption{比例环节伯德图代码}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{比例环节伯德图.png}
+    \caption{比例环节伯德图}
+    \label{fig:enter-label}
+\end{figure}
+根据图18和图20的比较可以得知，比例环节的幅频特性和相频特性得到了验证。
+\subsection{惯性环节的频率特性测试验证}
+
+惯性环节的模拟电路如图21所示。在惯性环节的模拟电路中，增益 \( K = 1 \)，惯性时间常数 \( T = 0.1s \)。因此，设置正弦输入信号的幅值为 1V，频率从 1Hz 开始逐步提高，到 10Hz 附近必须仔细测定，一直测试到频率约为 300Hz 为止，或到难于检测出输出信号时为止。每次测试读取输出响应波形的峰值和与输入波形的相位差，将每组数据记录在表2中。
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{惯性环节电路图.png}
+    \caption{惯性环节电路图}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{299ef6f4f1f736bea986b7cde2dbab0.jpg}
+    \caption{惯性环节simulink仿真}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{惯性环节计算数据的代码.png}
+    \caption{惯性环节计算数据的代码}
+    \label{fig:enter-label}
+\end{figure}
+\begin{table}[H] 
+\centering 
+\caption{$U_im=0.1V,T=0.1s$} 
+\begin{tabular}{|c|c|c|c|c|c|c|} 
+\hline 
+$f$/Hz & 1 & 4 & 8 & 15 & 16 & 17 \\ 
+\hline 
+$U_{om}$/V & 1.0000 & 0.9997 & 0.9987 & 0.9956 & 0.9950 & 0.9943 \\ 
+\hline 
+$20\lg(U_{om}/U_{im})$ & -0.0002 & -0.0027 & -0.0110 & -0.0384 & -0.0437 & -0.0493 \\ 
+\hline 
+相位差 $\phi$/($^\circ$) & -0.36 & -1.44 & -2.88 & -5.40 & -5.76 & -6.12 \\ 
+\hline 
+\end{tabular} 
+\end{table}
+
+\begin{table}[H] 
+\centering 
+\begin{tabular}{|c|c|c|c|c|} 
+\hline 
+$f$/Hz & 50 & 100 & 200 & 300 \\ 
+\hline 
+$U_{om}$/V & 0.9548 & 0.8622 & 0.6935 & 0.5732 \\ 
+\hline 
+$20\lg(U_{om}/U_{im})$ & -0.4021 & -1.2875 & -3.1790 & -4.8335 \\ 
+\hline 
+相位差 $\phi$/($^\circ$) & -17.46 & -30.60 & -46.80 & -56.16 \\ 
+\hline 
+\end{tabular} 
+\end{table}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1Hz黄线.png}
+    \caption{1Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1Hz蓝线.png}
+    \caption{1Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{4Hz黄线.png}
+    \caption{4Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{4Hz蓝线.png}
+    \caption{4Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{8Hz黄线.png}
+    \caption{8Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{8Hz蓝线.png}
+    \caption{8Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{15Hz黄线.png}
+    \caption{15Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{15Hz蓝线.png}
+    \caption{15Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{16Hz黄线.png}
+    \caption{16Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{16Hz蓝线.png}
+    \caption{16Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{17Hz黄线.png}
+    \caption{17Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{17Hz蓝线.png}
+    \caption{17Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{50Hz黄线.png}
+    \caption{50Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{50Hz蓝线.png}
+    \caption{50Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100Hz黄线.png}
+    \caption{100Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100Hz蓝线.png}
+    \caption{100Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{200Hz黄线.png}
+    \caption{200Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{200Hz蓝线.png}
+    \caption{200Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{300Hz黄线.png}
+    \caption{300Hz黄线}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{300Hz蓝线.png}
+    \caption{300Hz蓝线}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsubsection{根据表格内数据描点画图}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={幅频特性},
+            xlabel={频率 (Hz)},
+            ylabel={$20\lg(\frac{U_{om}}{U_{im}})$ (dB)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        \addplot table {
+            1 -0.0002
+            4 -0.0027
+            8 -0.0110
+            15 -0.0384
+            16 -0.0437
+            17 -0.0493
+            50 -0.4021
+            100 -1.2875
+            200 -3.1790
+            300 -4.8335
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={相频特性},
+            xlabel={频率 (Hz)},
+            ylabel={相位差 $\phi$ (°)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        \addplot table {
+            1 -0.36
+            4 -1.44
+            8 -2.88
+            15 -5.40
+            16 -5.76
+            17 -6.12
+            50 -17.46
+            100 -30.60
+            200 -46.80
+            300 -56.16
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{幅频特性和相频特性图表}
+\end{figure}
+\subsubsection{与MATLAB所画的惯性环节的伯德图相比较并且估读出转折频率}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{image222.png}
+    \caption{惯性环节伯德图}
+    \label{fig:enter-label}
+\end{figure}
+根据图44与图45的比较可以得出，惯性环节的幅频特性和相频特性得到了验证。通过描点画图从图44可以估读出，转折频率大致为10Hz，与理论值（$\frac{1}{T}$ = 10Hz）一致。
+\subsection{积分环节的频率特性测试验证}
+积分环节的模拟电路如图46所示。积分环节模拟电路中积分时间常数 \( T = 1 \, \text{ms} \)。由于积分的作用，测试时须从高频向低频测试，选定 \( 450 \, \text{Hz} \) 频率开始，逐步降低频率测试。输入正弦信号的幅值可分别整定为 \( 0.1 \, \text{V} \)、\( 0.5 \, \text{V} \) 和 \( 2.5 \, \text{V} \)，最低测试频率分别为 \( 0.5 \, \text{Hz} \)、\( 2 \, \text{Hz} \) 和 \( 10 \, \text{Hz} \)。在降低输入正弦信号频率过程中，输出正弦波开始出现“平顶”现象时，须仔细测试。每次测试读取输出响应波形的峰值和与输入波形的相位差，将每组数据记录在表3中。
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{积分环节电路图.png}
+    \caption{积分环节电路图}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{3276ea06f874b80692f5cdd9f37ff6b.png}
+    \caption{积分环节simulink仿真}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{积分环节代码.png}
+    \caption{积分环节代码}
+    \label{fig:enter-label}
+\end{figure}
+
+
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+$f$/Hz & 450 & 400&300 & 100& 1 & 0.5\\ \hline
+$U_{om}$/V & 32.3765 & 63.9567 & 209.3692 & 461.4865 & 627.9076 & 729.6203 \\ \hline
+$20\lg(U_{om}/U_{im})$ & 50.2046 & 56.1177 & 66.4183 & 73.2832 & 75.9579 & 77.2619 \\ \hline
+相位差 $\phi$/($^\circ$) & -90 & -90 & -90 & -90 & -90 & -90 \\ \hline
+\end{tabular}
+\caption{积分环节表}
+\end{table}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{积分环节450Hz.png}
+    \caption{积分环节450Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{积分环节400Hz.png}
+    \caption{积分环节400Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{积分环节300Hz.png}
+    \caption{积分环节300Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{积分环节100Hz.png}
+    \caption{积分环节100Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{积分环节1Hz.png}
+    \caption{积分环节1Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{积分环节0.5Hz.png}
+    \caption{积分环节0.5Hz}
+    \label{fig:enter-label}
+\end{figure}
+\subsubsection{根据表格内数据画图}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={幅频特性},
+            xlabel={频率 (Hz)},
+            ylabel={$20\lg\left(\frac{U_{om}}{U_{im}}\right)$ (dB)},
+            grid=major,
+            width=10cm,
+            height=5cm,
+            ymode=log,
+            log basis y={10}
+        ]
+        \addplot table {
+            450 50.2046
+            400 56.1177
+            300 66.4183
+            100 73.2832
+            1 75.9579
+            0.5 77.2619
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={相频特性},
+            xlabel={频率 (Hz)},
+            ylabel={相位差 $\phi$ (°)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        \addplot table {
+            450 -90
+            400 -90
+            300 -90
+            100 -90
+            1 -90
+            0.5 -90
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{积分环节的幅频特性和相频特性}
+\end{figure}
+
+\subsubsection{与MATLAB所画的积分环节伯德图相比较}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{积分环节伯德图.png}
+    \caption{积分环节伯德图}
+    \label{fig:enter-label}
+\end{figure}
+
+根据图55与图56的比较可以得出，积分环节的幅频特性和相频特性得到了验证。
+\subsection{比例微分环节的频率特性测试验证}
+比例微分环节的模拟电路如图52所示，比例 \( K = 1 \)，微分时间常数 \( T = 0.0 \, \text{ls} \)。输入正弦波测试信号的频率可从 \( 1 \, \text{Hz} \) 开始，直到大于 \( 1 \, \text{MHz} \) 为止。在幅值变化方向或相位差变化较大时刻处，频率变化要小一些，多测几组。用双踪示波器观察并记录输出与输入正弦波的幅值比及相位差，将每组数据记录在表4中。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{比例微分环节电路图.png}
+    \caption{比例微分环节电路图}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{比例微分仿真图.png}
+    \caption{比例微分仿真图}
+    \label{fig:enter-label}
+\end{figure}
+\begin{table}[H]
+\centering
+\caption{比例微分环节（$U_{im}=0.1V, K=1, T=10ms$)}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+$f$/Hz & 1 & 10 & 100 & $1\times10^3$ & $1\times10^4$ & $1\times10^5$ & $1\times10^6$ \\ \hline
+$U_{om}$/V & 0.6362 & 6.2829 & 62.8303 & 627.9178 & 6283.2 & 62831 & 627910 \\ \hline
+$20\lg(U_{om}/U_{im})$ & 16.0722 & 35.9632 & 55.9634 & 75.9581 & 95.9636 & 115.9635 & 135.9579 \\ \hline
+相位差 $\phi$/($^\circ$) & 10.221 & 32.145 & 44.215 & 54.012 & 76.125 & 80.96 & 89.265 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{比例微分1Hz.png}
+    \caption{比例微分1Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{比例微分10Hz.png}
+    \caption{比例微分10Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{比例微分100Hz.png}
+    \caption{比例微分100Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{比例微分1000Hz.png}
+    \caption{比例微分1000Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{比例微分10000Hz.png}
+    \caption{比例微分10000Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{100000Hz.png}
+    \caption{100000Hz}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{1000000Hz.png}
+    \caption{1000000Hz}
+    \label{fig:enter-label}
+\end{figure}
+\subsubsection{根据表格内数据描点画图}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={幅频特性},
+            xlabel={频率 (Hz)},
+            ylabel={$20\lg\left(\frac{U_{om}}{U_{im}}\right)$ (dB)},
+            grid=major,
+            width=10cm,
+            height=5cm,
+            ymode=log,
+            log basis y={10}
+        ]
+        \addplot table {
+            1 16.0722
+            10 35.9632
+            100 55.9634
+            1000 75.9581
+            10000 95.9636
+            100000 115.9635
+            1000000 135.9579
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={相频特性},
+            xlabel={频率 (Hz)},
+            ylabel={相位差 $\phi$ (°)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        \addplot table {
+            1 10.221
+            10 32.145
+            100 44.215
+            1000 54.012
+            10000 76.125
+            100000 80.96
+            1000000 89.265
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{比例微分环节的幅频特性和相频特性}
+\end{figure}
+
+
+\subsubsection{与MATLAB所画的比例微分伯德图相比较并且估读转折频率}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{比例微分伯德图.png}
+    \caption{比例微分伯德图}
+    \label{fig:enter-label}
+\end{figure}
+
+根据图66与图67的比较可以得出，惯性环节的幅频特性和相频特性得到了验证。通过描点画图从图66可以估读出，转折频率大致为100Hz，与理论值（$\frac{1}{T}$ = 100Hz）一致。
+
+\subsection{二阶控制系统的频率特性测试验证}
+选择正弦波输入测试信号，设置其幅值为 \(1.0 \, \text{V}\)，频率从低频开始，然后逐步提高。观察输出信号幅值和相位的变化，记录输出幅值与输入幅值的比 \(\frac{U_{om}}{U_{im}}\) 及其相位差 \(\varphi\)。在这两组数据变化较大的频段，应该多测试几组数据，仔细测定，直到输出滞后输入的相位为 \(180^\circ\) 为止。测试频率可以设定以下频率：\(0.1 \, \text{Hz}\), \(1 \, \text{Hz}\), \(5 \, \text{Hz}\), \(8 \, \text{Hz}\), \(10 \, \text{Hz}\), \(15 \, \text{Hz}\), \(20 \, \text{Hz}\), \(25 \, \text{Hz}\), \(30 \, \text{Hz}\), \(40 \, \text{Hz}\), \(50 \, \text{Hz}\), \(80 \, \text{Hz}\), \(100 \, \text{Hz}\), \(150 \, \text{Hz}\)，然后将测试数据填入表7中。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{二阶控制系统的电路图.png}
+    \caption{二阶控制系统的电路图}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{二阶系统simulink仿真.png}
+    \caption{二阶系统simulink仿真}
+    \label{fig:enter-l\documentclass{article}}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\caption{二阶控制系统}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$f/\text{Hz}$ & 0.1   & 1      & 5      & 8       & 10     & 15     & 20     \\ \hline
+$U_\text{om}/\text{V}$ & 1.0007 & 1.0758 & 0.8628 & 0.2395 & 0.1427 & 0.0593 & 0.0326 \\ \hline
+$\alpha = 20\log\frac{U_\text{om}}{U_\text{im}}$ & 0.0062 & 0.6343 & -1.2817 & -12.4153 & -16.9134 & -24.5428 & -29.7388 \\ \hline
+相位差$\varphi/(\degree)$ & -0.7205 & -7.7693 & -147.172 & -166.07 & -169.672 & -173.585 & -175.302 \\ \hline
+\end{tabular}
+
+\vspace{0.5cm}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+$f/\text{Hz}$ & 25     & 30     & 40     & 50     & 80     & 100    & 150    \\ \hline
+$U_\text{om}/\text{V}$ & 0.0206 & 0.0143 & 0.008  & 0.0051 & 0.002  & 0.0013 & 0.0006 \\ \hline
+$\alpha = 20\log\frac{U_\text{om}}{U_\text{im}}$ & -33.7059 & -36.9221 & -41.9681 & -45.8669 & -54.0559 & -57.9379 & -64.987 \\ \hline
+相位差$\varphi/(\degree)$ & -176.282 & -176.92 & -177.703 & -178.168 & -178.858 & -179.087 & -179.392 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{根据表格内数据描点画图}
+\begin{figure}[H]
+    \centering
+    % 幅频特性
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={幅频特性},
+            xlabel={频率 (Hz)},
+            ylabel={$20\lg\left(\frac{U_{om}}{U_{im}}\right)$ (dB)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        \addplot table {
+            0.1 0.0062
+            1 0.6343
+            5 -1.2817
+            8 -12.4153
+            10 -16.9134
+            15 -24.5428
+            20 -29.7388
+            25 -33.7059
+            30 -36.9221
+            40 -41.9681
+            50 -45.8669
+            80 -54.0559
+            100 -57.9379
+            150 -64.987
+        };
+        \end{axis}
+    \end{tikzpicture}
+
+    % 相频特性
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={相频特性},
+            xlabel={频率 (Hz)},
+            ylabel={相位差 $\phi$ (°)},
+            grid=major,
+            width=10cm,
+            height=5cm
+        ]
+        \addplot table {
+            0.1 -0.7205
+            1 -7.7693
+            5 -147.172
+            8 -166.07
+            10 -169.672
+            15 -173.585
+            20 -175.302
+            25 -176.282
+            30 -176.92
+            40 -177.703
+            50 -178.168
+            80 -178.858
+            100 -179.087
+            150 -179.392
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{二阶控制系统的幅频特性和相频特性}
+\end{figure}
+
+\subsubsection{与MATLAB所画的二阶系统伯德图作比较}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{second_order_bode.png}
+    \caption{二阶系统伯德图}
+    \label{fig:enter-label}
+\end{figure}
+根据图70与图71的比较可以得出，二阶系统的幅频特性和相频特性得到了验证。
+\section{拓展思考}
+
+
+\subsection{对数频率特性为什么采用w的对数分度}
+    
+    在自动控制系统分析中，频率特性通常用对数坐标表示，因为对数坐标可以在较大的频率范围内更清晰地展示系统的响应特性。对数分度的采用使得频率特性的变化（特别是增益变化）能够在更宽广的频率范围内直观地呈现。这样可以更容易分析系统的低频和高频行为，并在图上更好地显示谐振频率和转折频率
+  
+\subsection{如何根据输出信号幅值和相位变化确定转折频率}
+    
+   转折频率（也称为截止频率）是系统幅频特性曲线的斜率发生变化的频率点。在对数幅频图上，当增益开始下降或上升时，通常会出现一个20 dB/dec的斜率变化，并且相位角也会显著变化。可以通过分析幅值下降到原来值的70.7\%（即-3 dB）的位置来确定转折频率，同时相位角在此频率附近会急剧变化，这也是识别转折频率的一个标志。
+    
+\subsection{如何根据环节的理想对数幅频特性渐近线的转折频率、谐振峰值确定输入正弦信号的频率变化范围和测试点}
+    根据系统的对数幅频特性，可以根据渐近线的转折频率确定测试的频率范围。一般情况下，频率范围应覆盖从低频到高频的变化，以确保涵盖所有可能的共振频率和衰减区。谐振峰值通常出现在频率接近自然频率的地方，测试点应选择在谐振峰值的频率附近，以观察系统的最大幅值响应和相位变化。同时，也需要选择低频和高频段的测试点，以全面评估系统的频率响应特性。
+\subsection{改变二阶控制系统模拟测试电路中R3的值，即更改了系统开环增益K,系统的自然频率将发生变化，重新测试系统的频率特性，比较后得出结论。}
+    改变开环增益K将直接影响系统的自然频率和阻尼比。具体来说，当增益K增大时，自然频率也可能会相应增大，系统的响应速度变快；相反，当增益减小时，自然频率会减小，系统响应速度变慢。此外，增益的变化还可能改变系统的稳定性和谐振特性。在重新测试频率特性时，可以通过对比改变前后的幅频特性和相频特性来观察这些变化。结论应基于对系统性能的综合评估，包括响应速度、稳定性和谐振特性的变化。
+
+   
+\section{实验总结}
+本实验通过Matlab对多种典型控制系统（包括比例环节、惯性环节、积分环节、比例微分环节和二阶系统）的频率特性进行了测试和验证。实验的主要目标是理解和掌握这些环节的频率响应特性及其与传递函数的关系，同时加深对系统动态特性和频域分析方法的认识。实验结果显示，不同环节在频率特性上的响应差异显著：例如，比例环节的幅频特性相对平坦，而积分环节在低频下幅值显著上升，二阶系统在特定频率下则出现明显的谐振峰值。这些结果与理论预测基本一致，同时也揭示了实验系统中非线性因素可能带来的偏差。
+\section{实验思考}
+在实验过程中，频率范围的选择对测试结果的准确性至关重要。若频率选择过窄，可能无法完整呈现系统的动态特性；若选择过宽，则可能出现信号衰减过大或信号幅值过小的情况，影响测量精度。此外，由于实际系统中可能存在饱和、滞后或死区等非线性因素，这些因素在一定程度上导致了理想特性与实际测量结果的偏差。因此，在实际控制系统设计中，需要考虑非线性因素的影响，并通过适当的补偿或修正方法来提高系统的精度和稳定性。同时，实验结果也表明，在实际应用中，频域分析方法是一种有效的系统分析工具，特别是在系统设计和性能优化方面具有重要意义。未来的实验中，可以进一步探索非线性系统的频率特性，以及如何通过控制参数的调整来实现更优的系统性能。
+
+\end{document}
