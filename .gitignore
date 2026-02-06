@@ -91,4 +91,4 @@ desktop.ini
 *.sqlite3
 
 # PDF文件（通常很大）
-*.pdf
+# *.pdf  # 已注释，允许上传PDF文件
