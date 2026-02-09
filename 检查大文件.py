@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-检查目录中超过100MB的文件
+上传资料者使用
+检查目录中超过100MB的文件，因为github无法上传超过100MB的文件
 """
 import os
 from pathlib import Path
