@@ -286,9 +286,10 @@ def update_readme(course_dir: Path):
     # 查找"### 已有资料"到下一个###或##之间的内容（精确匹配，不包含其他部分）
     pattern = r'(### 已有资料.*?)(?=\n### |\n## |\Z)'
     
+    materials_body = new_materials_section.split('### 已有资料\n', 1)[-1].strip()
     new_materials_content = f"""### 已有资料
 
-{new_materials_section.split('### 已有资料\n', 1)[-1].strip()}
+{materials_body}
 """
     
     if re.search(pattern, content, re.DOTALL):

@@ -16,7 +16,27 @@
 
 ### 已有资料
 
-- **项目资料**：包含JavaScript代码、JSON配置文件、图片文件等（可能是一个完整的软件工程项目）
+- **作业**：
+  - .idea
+  - 1_个人网页部分
+  - AI_health_diet
+  - css
+  - images
+  - img
+  - inspectionProfiles
+  - miniprogram
+  - pages
+  - quickstartFunctions
+  - templates
+  - 小程序作业
+  - 小程序设计进阶
+  - 常毅成blog
+  - 常毅成第一次主观题
+  - *（还有 3 项，共 18 项）*
+
+- **实验**：
+  - js
+  - 第三次实验课_html+css+js
 
 ### 资料扩展记录
 

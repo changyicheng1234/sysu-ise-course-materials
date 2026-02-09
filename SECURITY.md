@@ -1,21 +1,10 @@
-# Security Policy
+# 安全策略
 
-## Supported Versions
+## 报告问题
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+如果您发现本仓库中存在以下问题，请通过 [Issues](https://github.com/changyicheng1234/sysu-ise-course-materials/issues) 反馈：
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+- 包含侵权内容（如未经授权的试卷、答案等）
+- 其他不适合公开的内容
 
-## Reporting a Vulnerability
-
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+我们会在收到反馈后尽快处理。感谢您的关注！
