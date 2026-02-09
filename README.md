@@ -37,6 +37,10 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！来自大家
 
 感谢对本项目贡献的同学：
 
+- [@Eileen276](https://github.com/Eileen276)
+- [@yky666](https://github.com/yky666)
+- [@Hongyi Chen](https://github.com/HongyiChen)
+
 ……以及电脑前的您！
 
 ## 许可
