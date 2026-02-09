@@ -1,0 +1,30 @@
+name: ⚠️ 侵权举报
+description: 举报涉及侵权或隐私泄露的内容
+title: "[侵权举报] "
+labels: ["侵权举报"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: 举报类型
+      options:
+        - 包含敏感隐私信息（联系方式、家庭住址等）
+        - 未经授权的试卷或答案
+        - 其他侵权内容
+    validations:
+      required: true
+  - type: textarea
+    id: content
+    attributes:
+      label: 涉及内容
+      description: 请说明涉及侵权的文件路径或具体内容
+      placeholder: 例如：某课程文件夹下的某文件包含了学生的个人信息
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: 补充说明
+      description: 其他需要说明的信息（可选）
+    validations:
+      required: false

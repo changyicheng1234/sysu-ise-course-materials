@@ -8,7 +8,7 @@
 
 若要下载单个文件夹，复制该文件夹的网址，粘贴入 [DownGit](https://minhaskamal.github.io/DownGit/#/home) 中，选择 download 即可。
 
-例如，要下载"数字逻辑"文件夹，复制该文件夹的 GitHub 网址（如 `https://github.com/用户名/仓库名/tree/main/数字逻辑`），粘贴到 DownGit 中即可下载。
+例如，要下载"数字逻辑"文件夹，复制该文件夹的 GitHub 网址（如 `https://github.com/changyicheng1234/sysu-ise-course-materials/tree/main/数字逻辑`），粘贴到 DownGit 中即可下载。
 
 ## 前言
 
@@ -29,7 +29,7 @@
 
 Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！来自大家的关注、维护和贡献，才是让这个攻略继续存在的动力~
 
-如果希望匿名贡献，可以 email 至此邮箱，注明 "SYSU-ISE-Courses" 即可：[您的邮箱]
+如果希望匿名贡献，可以 email 至此邮箱，注明 "SYSU-ISE-Courses" 即可：2937212699@qq.com
 
 贡献方法见 [贡献方法](贡献方法.md)
 
@@ -37,9 +37,10 @@ Issue、PR、纠错、资料、选课/考试攻略，完全欢迎！来自大家
 
 感谢对本项目贡献的同学：
 
+- [@changyicheng1234](https://github.com/changyicheng1234)
 - [@Eileen276](https://github.com/Eileen276)
 - [@yky666](https://github.com/yky666)
-- [@Hongyi Chen](https://github.com/HongyiChen)
+- [@McAtr1Xx](https://github.com/McAtr1Xx)
 
 ……以及电脑前的您！
 

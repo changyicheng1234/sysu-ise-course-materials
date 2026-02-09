@@ -1,0 +1,92 @@
+name: 📚 资料贡献
+description: 提交新的课程资料、复习攻略、选课建议等
+title: "[资料贡献] "
+labels: ["资料贡献"]
+body:
+  - type: dropdown
+    id: course
+    attributes:
+      label: 课程名称
+      description: 请选择你要贡献资料的课程
+      options:
+        - C++程序设计
+        - 人工智能基础与进阶实训
+        - 人工智能导论
+        - 信号与系统
+        - 分布式计算
+        - 图像处理
+        - 工程数学
+        - 微机原理
+        - 心理健康
+        - 控制电机技术
+        - 数字逻辑
+        - 数据库
+        - 数据结构与算法
+        - 智能机器人技术
+        - 机器学习
+        - 机器人实验
+        - 机械设计基础
+        - 最优化
+        - 离散数学
+        - 移动机器人规划
+        - 物联网
+        - 现代控制理论
+        - 科技论文写作
+        - 自动控制原理
+        - 自然语言处理
+        - 自控实验
+        - 视频技术
+        - 认知科学
+        - 计算机控制技术
+        - 计算机网络
+        - 计算机视觉
+        - 软件工程
+        - 运筹学
+        - 通信原理
+        - 集群控制
+        - 马克思主义基本原理
+        - 其他（请在描述中说明）
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: 资料类型
+      description: 请选择资料类型
+      options:
+        - 课程作业
+        - 实验报告
+        - 期末复习资料
+        - 考试真题/回忆版
+        - 课件/PPT
+        - 选课建议/复习攻略
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 资料描述
+      description: 简单描述一下你要贡献的资料内容
+      placeholder: 例如：2025年春季学期机器学习期末复习笔记，包含各章重点总结
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: 文件上传
+      description: 请将文件拖拽到此处上传，或提供下载链接
+      placeholder: 拖拽文件到这里，或粘贴网盘链接
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认事项
+      options:
+        - label: 本资料不包含他人敏感隐私信息（如联系方式、家庭住址等，姓名和学号可以保留）
+          required: true
+        - label: 本资料不涉及侵权问题
+          required: true
+        - label: 我了解本项目采用 CC BY-SA 4.0 协议
+          required: true

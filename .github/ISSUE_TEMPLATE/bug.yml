@@ -1,0 +1,29 @@
+name: 🐛 错误反馈
+description: 反馈资料中的错误、链接失效、文件损坏等问题
+title: "[错误反馈] "
+labels: ["错误反馈"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: 请描述你发现的问题
+      placeholder: 例如：数据结构与算法文件夹中的某份作业答案第3题解答有误
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: 问题位置
+      description: 请说明问题所在的文件路径或链接
+      placeholder: 例如：数据结构与算法/常毅成/作业1.pdf
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 修改建议
+      description: 如果你知道正确内容，请在此说明（可选）
+      placeholder: 例如：第3题正确答案应该是...
+    validations:
+      required: false
