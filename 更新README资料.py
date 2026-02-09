@@ -3,6 +3,7 @@
 上传资料者使用
 自动更新课程README中的"已有资料"部分
 根据目录中的文件自动生成资料描述
+同时同步更新"收录内容.md"文件
 
 注意：脚本只更新"已有资料"部分，其他所有部分（如"选课建议"、"考试攻略"等）完全保留，需要手动编辑
 """
@@ -33,6 +34,30 @@ IGNORE_PATTERNS = [
     '.DS_Store',
     '~$',  # Word临时文件
 ]
+
+# 课程分类规则（用于更新收录内容.md）
+COURSE_CATEGORIES = {
+    '特殊目录': ['大一上期末', '大一下期末'],
+    '全校通用课程': ['马克思主义基本原理', '毛概期末复习'],
+    '专业基础课程': [
+        'C++程序设计', '数据结构与算法', '微机原理', '数字逻辑', 
+        '工程数学', '信号与系统', '离散数学'
+    ],
+    '专业核心课程': [
+        '人工智能导论', '人工智能基础与进阶实训', '机器学习', 
+        '计算机视觉', '自然语言处理', '分布式计算', '数据库', 
+        '计算机网络', '软件工程', '智能机器人技术'
+    ],
+    '控制与机器人相关课程': [
+        '自动控制原理', '自控实验', '现代控制理论', '机器人实验', 
+        '移动机器人规划', '集群控制', '控制电机技术', '计算机控制技术'
+    ],
+    '其他专业课程': [
+        '图像处理', '视频技术', '物联网', '运筹学', '最优化', 
+        '机械设计基础', '科技论文写作', '认识科学', '通信原理'
+    ],
+    '通识课程': ['心理健康']
+}
 
 # 文件类型分类关键词
 FILE_CATEGORIES = {
@@ -285,14 +310,120 @@ def update_readme(course_dir: Path):
         print(f"❌ {course_dir.name}: 写入README失败 - {e}")
 
 
+def get_course_category(course_name: str) -> Tuple[str, str]:
+    """根据课程名称获取其分类
+    返回: (分类名称, 子分类名称) 或 (None, None) 如果未找到
+    """
+    # 检查特殊目录
+    if course_name in COURSE_CATEGORIES['特殊目录']:
+        return ('特殊目录', None)
+    
+    # 检查全校通用课程
+    if course_name in COURSE_CATEGORIES['全校通用课程']:
+        return ('全校通用课程', None)
+    
+    # 检查智能工程学院专用课程的子分类
+    subcategories = ['专业基础课程', '专业核心课程', '控制与机器人相关课程', '其他专业课程', '通识课程']
+    for subcategory in subcategories:
+        if course_name in COURSE_CATEGORIES.get(subcategory, []):
+            return ('智能工程学院专用课程', subcategory)
+    
+    return (None, None)
+
+
+def update_collection_file(course_dirs: List[Path]):
+    """更新收录内容.md文件"""
+    collection_path = BASE_PATH / "收录内容.md"
+    
+    # 收集所有课程，按分类组织
+    courses_by_category = defaultdict(lambda: defaultdict(list))
+    
+    # 处理特殊目录（即使没有README.md也要包含）
+    for special_dir in ['大一上期末', '大一下期末']:
+        special_path = BASE_PATH / special_dir
+        if special_path.exists() and special_path.is_dir():
+            courses_by_category['特殊目录'][None].append(special_dir)
+    
+    # 处理其他课程目录
+    for course_dir in course_dirs:
+        course_name = course_dir.name
+        category, subcategory = get_course_category(course_name)
+        
+        if category:
+            courses_by_category[category][subcategory].append(course_name)
+        else:
+            # 未分类的课程，添加到"其他专业课程"
+            courses_by_category['智能工程学院专用课程']['其他专业课程'].append(course_name)
+    
+    # 生成新的收录内容
+    lines = ["# 收录内容", ""]
+    lines.append("本项目收录了以下课程的学习资料：")
+    lines.append("")
+    
+    # 特殊目录
+    if '特殊目录' in courses_by_category:
+        special_courses = sorted(courses_by_category['特殊目录'][None])
+        for course in special_courses:
+            lines.append(f"- [{course}]({course}/)")
+        lines.append("")
+    
+    # 全校通用课程
+    if '全校通用课程' in courses_by_category:
+        lines.append("## 全校通用课程")
+        lines.append("")
+        general_courses = sorted(courses_by_category['全校通用课程'][None])
+        for course in general_courses:
+            lines.append(f"- [{course}]({course}/)")
+        lines.append("")
+    
+    # 智能工程学院专用课程
+    if '智能工程学院专用课程' in courses_by_category:
+        lines.append("## 智能工程学院专用课程")
+        lines.append("")
+        
+        # 按子分类顺序处理
+        subcategory_order = [
+            '专业基础课程', '专业核心课程', '控制与机器人相关课程', 
+            '其他专业课程', '通识课程'
+        ]
+        
+        for subcategory in subcategory_order:
+            if subcategory in courses_by_category['智能工程学院专用课程']:
+                courses = sorted(courses_by_category['智能工程学院专用课程'][subcategory])
+                if courses:
+                    lines.append(f"### {subcategory}")
+                    for course in courses:
+                        lines.append(f"- [{course}]({course}/)")
+                    lines.append("")
+        
+        # 处理其他未在预定义列表中的子分类
+        for subcategory in courses_by_category['智能工程学院专用课程']:
+            if subcategory not in subcategory_order:
+                courses = sorted(courses_by_category['智能工程学院专用课程'][subcategory])
+                if courses:
+                    lines.append(f"### {subcategory}")
+                    for course in courses:
+                        lines.append(f"- [{course}]({course}/)")
+                    lines.append("")
+    
+    # 写入文件
+    try:
+        with open(collection_path, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(lines))
+        print(f"\n✅ 收录内容.md 已更新")
+    except Exception as e:
+        print(f"\n❌ 更新收录内容.md失败 - {e}")
+
+
 def main():
-    """主函数：更新所有课程目录的README"""
+    """主函数：更新所有课程目录的README和收录内容.md"""
     print("开始更新课程README文件...\n")
     
-    # 获取所有课程目录
+    # 获取所有课程目录（排除特殊目录，因为它们不需要README.md）
     course_dirs = []
+    special_dirs = ['大一上期末', '大一下期末']  # 这些目录不需要README.md，会在收录内容中单独处理
     for item in BASE_PATH.iterdir():
-        if item.is_dir() and not item.name.startswith('.') and item.name not in ['大一上期末', '大一下期末', '毛概期末复习']:
+        if item.is_dir() and not item.name.startswith('.') and item.name not in special_dirs:
             # 检查是否有README.md（确保是课程目录）
             if (item / "README.md").exists():
                 course_dirs.append(item)
@@ -302,6 +433,9 @@ def main():
     # 更新每个目录的README
     for course_dir in sorted(course_dirs):
         update_readme(course_dir)
+    
+    # 同步更新收录内容.md（会自动包含特殊目录）
+    update_collection_file(course_dirs)
     
     print(f"\n完成！共处理 {len(course_dirs)} 个课程目录")
 
